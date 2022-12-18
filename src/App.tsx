@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Landing, Home, Dashboard, Analitycs, Admin } from "./pages/Index";
+import ButtonLog from "./components/ButtonLog";
 import Navbar from "./components/Navbar";
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
         <>
             <BrowserRouter>
                 <Navbar />
+                <ButtonLog/>
                 <Routes>
                     <Route index element={<Landing />} />
                     <Route path="/landing" element={<Landing />}></Route>
