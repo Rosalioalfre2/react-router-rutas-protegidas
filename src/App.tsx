@@ -13,6 +13,8 @@ function App() {
             setUser({
                 id: 1,
                 name: "John",
+                permissions: ["analize"],
+                roles: ["admin"],
             });
         };
 
@@ -37,14 +39,41 @@ function App() {
                 <Routes>
                     <Route index element={<Landing />} />
                     <Route path="/landing" element={<Landing />}></Route>
-                    <Route path="/home" element={
-                        <ProtectedRoute user={user} redirectTo='/'>
-                            <Home/>
-                        </ProtectedRoute>
-                    } />
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/analitycs" element={<Analitycs />} />
-                    <Route path="/admin" element={<Admin />} />
+                    <Route element={<ProtectedRoute isAllowed={!!user} />}>
+                        <Route path="/home" element={<Home />} />
+                        <Route path="/dashboard" element={<Dashboard />} />
+                    </Route>
+                    <Route
+                        path="/analitycs"
+                        element={
+                            <>
+                                <ProtectedRoute
+                                    isAllowed={
+                                        !!user &&
+                                        user.permissions.includes("analize")
+                                    }
+                                    redirectTo="/home"
+                                >
+                                    <Analitycs />
+                                </ProtectedRoute>
+                            </>
+                        }
+                    />
+                    <Route
+                        path="/admin"
+                        element={
+                            <>
+                                <ProtectedRoute
+                                    isAllowed={
+                                        !!user && user.roles.includes("admin")
+                                    }
+                                    redirectTo="/home"
+                                >
+                                    <Admin />
+                                </ProtectedRoute>
+                            </>
+                        }
+                    />
                 </Routes>
             </BrowserRouter>
         </>
